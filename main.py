@@ -1,16 +1,16 @@
 import discord
-from discord import app_commands
 from discord.ext import commands
 from typing import Literal, Optional
-from discord.ext.commands import Greedy, Context  # or a subclass of yours
-
+from discord.ext.commands import Greedy, Context
 import os
 from dotenv import load_dotenv
 import asyncio
 import tracemalloc, logging, logging.handlers
 import datetime
 from discord import Activity, ActivityType
+from keep_alive import keep_alive
 
+# keep_alive()
 load_dotenv()
 
 # Get bot token from environment variable
@@ -85,7 +85,15 @@ async def on_command_error(ctx, error):
         except discord.errors.Forbidden:
             await ctx.reply("skill issue")
         await ctx.message.delete()
-
+    elif isinstance(error, commands.errors.MissingPermissions):
+        author = ctx.author
+        try:
+            await author.send(
+                "FAFO :imp: \n You don't have permission to use that command."
+            )
+        except discord.errors.Forbidden:
+            await ctx.reply("skill issue")
+        await ctx.message.delete()
 
 tracemalloc.start()
 timestamp = datetime.datetime.utcnow()
