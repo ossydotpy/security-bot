@@ -68,16 +68,6 @@ class Verify(commands.Cog):
             else:
                 await ctx.reply(f"This command can only be executed in {self.verification_channel.mention}.")
 
-    @commands.command()
-    @commands.has_permissions(administrator = True)
-    async def add_secret(self, ctx, secret: str):
-        if re.match("^[A-Z]+$",secret):
-            with open("secrets.txt","a") as f:
-                f.writelines(secret.strip())
-            await ctx.reply("new secret added")
-        else:
-            await ctx.reply("invalid secret format")
-
 
 async def setup(bot):
     await bot.add_cog(Verify(bot))
